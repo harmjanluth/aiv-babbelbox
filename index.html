@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hubbabbelbox</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; font-family: "Signika", sans-serif; }
+        h3 {margin: 1rem 0 1rem 0; font-weight: 400; }
+        html { background-color: #000; color: #fff; font-size: 140%; }
+        /* Ensure the video fills the width of the screen, and maintains aspect ratio */
+        video {
+            position: fixed; /* Use fixed positioning */
+            right: 0;
+            bottom: 0;
+            min-width: 100%; /* These are necessary to ensure the video covers the entire screen */
+            min-height: 100%;
+            width: auto; /* Maintain aspect ratio */
+            height: auto;
+            z-index: -100; /* Ensure the video stays in the background */
+            background-size: cover;
+            overflow: hidden;
+            object-fit: cover; /* This makes the video cover the available space without losing its aspect ratio */
+        }
+
+        .record-btn {
+            background-color: #ff0000;
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            padding: 20px 40px;
+            font-size: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 30px;
+        }
+
+        .record-btn.active {
+            animation: pulse-animation 2s infinite;
+        }
+
+        @keyframes pulse-animation {
+            0% {
+                box-shadow: 0 0 0 0px rgba(255, 0, 0, 0.7);
+            }
+            100% {
+                box-shadow: 0 0 0 20px rgba(255, 0, 0, 0);
+            }
+        }
+
+        .recording #challenge { display: none; }
+        .recording .content { bottom: 0; height: 110px; top: auto; width: 100%; border-radius: 0; padding: 30px 0 50px; }
+        .content { border-radius: 20px; text-align: center; width: 640px; padding: 30px;  left: 0; right: 0; margin: auto; position: absolute; height: 480px; top:0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); padding-bottom: 50px; backdrop-filter: blur(15px); }
+    </style>
+</head>
+<body>
+
+
+<video id="webcam" autoplay></video>
+<div class="content">
+    <div id="challenge">
+        <h3>Achmea Impact Ventures is benieuwd naar..</h3>
+        <h1>Wat denk je dat de grootste uitdaging is voor het onderwijssysteem in ons land, en hoe kunnen we die aanpakken?</h1>
+    </div>
+    <button id="recordBtn" class="record-btn">Start opname</button>
+</div>
+
+<script>
+    // JavaScript to request webcam access and stream the video
+    if (navigator.mediaDevices.getUserMedia) {
+        // Adjust here to get the best resolution
+        navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1280 }, height: { ideal: 720 } } })
+            .then(function (stream) {
+                let video = document.getElementById('webcam');
+                video.srcObject = stream;
+            })
+            .catch(function (error) {
+                console.log("Something went wrong!");
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const recordBtn = document.getElementById('recordBtn');
+    let isRecording = false;
+
+    recordBtn.addEventListener('click', () => {
+        isRecording = !isRecording; // Toggle recording state
+        var $text = document.getElementById('challenge');
+        
+        if (isRecording) {
+            startRecording();
+            document.body.className = 'recording';
+            recordBtn.classList.add('active');
+            recordBtn.textContent = 'Stop';
+        } else {
+            stopRecording();
+            $text.style.display = 'block';
+            document.body.className = 'stopped-recording';
+            recordBtn.classList.remove('active');
+            recordBtn.textContent = 'Start opname';
+        }
+    });
+});
+
+function startRecording() {
+    console.log('Recording started...');
+    // Implement the logic to start recording here
+}
+
+function stopRecording() {
+    console.log('Recording stopped.');
+    // Implement the logic to stop recording here
+}
+
+</script>
+
+</body>
+</html>
